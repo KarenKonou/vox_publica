@@ -19,6 +19,8 @@ config :vox_publica, Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
+config :activity_pub, :instance, federating: false
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :vox_publica, Endpoint,
@@ -28,3 +30,5 @@ config :vox_publica, Endpoint,
 config :argon2_elixir,
   t_cost: 1,
   m_cost: 8
+
+config :tesla, adapter: Tesla.Mock

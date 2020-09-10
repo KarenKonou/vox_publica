@@ -37,3 +37,6 @@ npm-debug.log
 
 # user-local overrides for mess
 deps.path
+
+# ElixirLS artifact directory
+/.elixir_ls/

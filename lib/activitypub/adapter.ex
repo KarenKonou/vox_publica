@@ -3,6 +3,7 @@ defmodule VoxPublica.ActivityPub.Adapter do
 
   alias ActivityPub.Actor
   alias VoxPublica.Users
+  alias VoxPublica.Repo
 
   defp format_actor(user) do
     ap_base_path = System.get_env("AP_BASE_PATH", "/pub")
@@ -47,5 +48,25 @@ defmodule VoxPublica.ActivityPub.Adapter do
          actor <- format_actor(user) do
       {:ok, actor}
     end
+  end
+
+  def maybe_create_remote_actor(actor) do
+    case Users.by_username(actor.username) do
+      {:ok, _} -> :ok
+      {:error, _} -> create_remote_actor(actor)
+    end
+  end
+
+  def create_remote_actor(actor) do
+    attrs = %{
+      name: actor.data["name"],
+      username: actor.username,
+      summary: actor.data["summary"]
+    }
+
+    actor_object = ActivityPub.Object.get_by_ap_id(actor.ap_id)
+
+    {:ok, user} = Users.create_remote(attrs)
+    {:ok, _object} = ActivityPub.Object.update(actor_object, %{pointer_id: user.id})
   end
 end
