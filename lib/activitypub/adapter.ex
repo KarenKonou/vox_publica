@@ -66,7 +66,11 @@ defmodule VoxPublica.ActivityPub.Adapter do
 
     actor_object = ActivityPub.Object.get_by_ap_id(actor.ap_id)
 
-    {:ok, user} = Users.create_remote(attrs)
-    {:ok, _object} = ActivityPub.Object.update(actor_object, %{pointer_id: user.id})
+    Repo.transact_with(fn ->
+      with {:ok, user} <- Users.create_remote(attrs),
+           {:ok, _object} <- ActivityPub.Object.update(actor_object, %{pointer_id: user.id}) do
+        {:ok, user}
+      end
+    end)
   end
 end
