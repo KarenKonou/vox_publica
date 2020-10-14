@@ -1,6 +1,7 @@
 defmodule VoxPublica.Web.Router do
   use VoxPublica.Web, :router
   use ActivityPubWeb.Router
+  use NodeinfoWeb.Router
 
   pipeline :browser do
     plug :accepts, ["html"]

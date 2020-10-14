@@ -176,6 +176,7 @@ config :phoenix, :json_library, Jason
 
 config :activity_pub, :adapter, VoxPublica.ActivityPub.Adapter
 config :activity_pub, :repo, VoxPublica.Repo
+config :nodeinfo, :adapter, VoxPublica.NodeinfoAdapter
 
 config :vox_publica, Oban,
   repo: VoxPublica.Repo,
